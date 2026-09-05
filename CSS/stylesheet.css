@@ -1,0 +1,195 @@
+html {
+    background-color: palevioletred;
+    
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-image: url("../Images/mao.png");
+    background-size: contain;
+    background-repeat:space;
+    background-position: center;
+}
+
+.content {
+    width: 70%;
+    min-height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: pink;
+    box-sizing: border-box;
+    border: 3px dashed #c0cfb2;
+    position: relative;
+}
+
+.btn-image {
+    height:150px;
+    width: 350px;
+    border-radius: 50px;
+    background-image: url(../Images/sighs.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-style: dashed;
+    border-color: mediumaquamarine;
+    font-family: "Emilys Candy";
+    font-size: large;
+    font-weight:lighter;
+    color: green;
+    -webkit-text-stroke:0.5px darkgreen;
+    cursor: pointer;
+}
+.btn-image:active {
+    transform: scale(0.95);
+}
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 15%;
+    width: 70%;
+    height: 100%;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000;
+}
+.popup-box {
+    width: 500px;
+    box-sizing: border-box;
+    background-color: #e1f7d5;
+    color: green;
+    padding: 30px;
+    border-radius: 20px;
+    border: 3px dashed rgb(255, 87, 190);
+    text-align: center;
+}
+.popup-box h2 .strike {
+    text-decoration: line-through !important;
+}
+.button2 {
+    background-color:#ffbdbd;
+    height: 45px;
+    width: 55px;
+    border-radius: 10px;
+    font-family: "Nerko One";
+    font-size: large;
+    font-weight: lighter;
+    border: 0;
+    color: green;
+}
+.button3 {
+    background-color:#ffbdbd;
+    height: 45px;
+    width: 55px;
+    border-radius: 10px;
+    font-family: "Nerko One";
+    font-size: large;
+    font-weight: lighter;
+    border: 0;
+    color: green;
+}
+#popup2 {
+    display: none;
+    opacity: 0;
+    transform: scale(0.3);
+    z-index: 1001;
+}
+
+#popup2.show {
+    display: flex;
+
+    animation: dramaticPopup 0.8s cubic-bezier(0.17, 0.67, 0.25, 1.2) forwards;
+}
+
+
+/* Dramatic entrance */
+@keyframes dramaticPopup {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-8deg);
+        filter: blur(10px);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1.05) rotate(3deg);
+        filter: blur(0);
+    }
+
+    65% {
+        transform: scale(0.95) rotate(-2deg);
+    }
+
+    80% {
+        transform: scale(1.02) rotate(1deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+#popup2.show::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    z-index: -1;
+    animation: dramaticFlash 0.5s ease-out;
+}
+
+@keyframes dramaticFlash {
+    0% {
+        opacity: 1;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+#musicButton {
+    position: absolute;
+    top: 20px;
+    width: 25px;
+    height: 25px;
+
+    border: none;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #68ff84;
+
+    font-size: 16px;
+    font-family: "Nerko One", sans-serif;
+    cursor: pointer;
+    z-index: 10;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#musicButton:hover {
+    background: #ddd;
+}
+
+.musicButton:active {
+    transform: scale(0.9);
+}
+.download-button {
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #333;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.download-button:hover {
+    color: #ff69b4;
+}
