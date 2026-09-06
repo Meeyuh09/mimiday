@@ -4,6 +4,7 @@
     <!-- GitHub Pages deployment -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Happy Birthday!</title>
     <link href="CSS/stylesheet.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Nerko+One&display=swap" rel="stylesheet">
@@ -13,14 +14,17 @@
         <button class="btn-image" id="myButton">
             <img src="Images/button.png" width="200" height="200" alt="Button">
         </button>
+
+        <!-- Background Music -->
         <audio id="bgMusic" loop>
             <source src="Fleatopia Hollow Knight Silksong OST Official Soundtrack Original Score.mp3" type="audio/mpeg">
         </audio>
         <button id="musicButton">▶</button>
-        <!-- NEW: Tic Tac Toe Game Music -->
-<audio id="gameMusic" loop>
-    <source src="The Choir Hollow Knight Silksong OST Official Soundtrack Original Score.mp3" type="audio/mpeg">
-</audio>
+
+        <!-- Tic Tac Toe Game Music -->
+        <audio id="gameMusic" loop>
+            <source src="The Choir Hollow Knight Silksong OST Official Soundtrack Original Score.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <!-- POPUP 1 -->
@@ -41,11 +45,11 @@
                     <img id="birthdayImage" src="Images/doodle.png" width="400" height="450" alt="Birthday Doodle">
                 </button>
 
-                <img id="hiddenPicture" src="Images/HappyBirthday.png" width="500" height="450" alt="Happy Birthday Picture">
+                <img id="hiddenPicture" src="Images/HappyBirthday.png" width="500" height="500" alt="Happy Birthday Picture">
             </div>
 
             <!-- TIC TAC TOE -->
-            <div class="tic-tac-toe" id="ticTacToe">
+            <div class="tic-tac-toe" id="ticTacToe" style="display: none;">
                 <h2>Tic Tac Toe :3</h2>
 
                 <div id="gameBoard">
@@ -64,8 +68,11 @@
                 <button id="restartGame">Restart</button>
             </div>
 
-            <p id="birthdayText">Happiest birthday, my love :3</p>
-
+            <!-- SEPARATE BIRTHDAY TEXT ELEMENTS -->
+            <p id="doodleText">Here's your lil surprise! Hope you likey, I made this with all my blood, sweat, and tears <3 </p>
+            <p id="birthdayText" style="display: none;">NYEHEHEHEHE HAPPY BIRTHDAY BABY :33 (Kat did such a good job <3 Don't forget to thank her :3)
+            You don't have to download it from here, I'm gonna forward you the og drawing anyway <3 mwah </p>
+                <link href="https://fonts.googleapis.com/css2?family=Purple+Purse&display=swap" rel="stylesheet">
             <div class="button-group">
                 <button class="button3" id="closePopup">Close</button>
                 <button class="download-button" id="downloadButton" title="Download image">

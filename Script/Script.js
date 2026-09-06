@@ -1,6 +1,7 @@
 // =========================
 // DOM ELEMENTS
 // =========================
+const doodleText = document.getElementById("doodleText");
 const birthdayText = document.getElementById("birthdayText");
 const button = document.getElementById("myButton");
 const popup = document.getElementById("popup");
@@ -78,7 +79,7 @@ function startGameMusic() {
 }
 
 // Crossfade settings
-const FADE_DURATION = 1500; // Fade time in milliseconds (1 second)
+const FADE_DURATION = 1500; // Fade time in milliseconds (1.5 seconds)
 const FADE_STEPS = 20; // Slightly increased steps for extra smooth transitions
 const STEP_TIME = FADE_DURATION / FADE_STEPS;
 
@@ -129,6 +130,7 @@ button.addEventListener("click", () => {
     popup.style.display = "flex";
 });
 
+// Show Doodle Text & hide Birthday Text when opening Popup 2 (Doodle View)
 nextButton.addEventListener("click", () => {
     clickSound.currentTime = 0;
     clickSound.play();
@@ -137,20 +139,25 @@ nextButton.addEventListener("click", () => {
     popup2.style.display = "flex";
 
     birthdayImage.style.display = "block";
-    if (birthdayText) birthdayText.style.display = "block"; // 👈 Show with Doodle
-    
+    if (doodleText) doodleText.style.display = "block";
+    if (birthdayText) birthdayText.style.display = "none";
+    if (downloadButton) downloadButton.style.display = "block";
+
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
     ticTacToe.style.display = "none";
 });
 
+// Hide both text elements during Tic Tac Toe
 doodleButton.addEventListener("click", () => {
     clickSound.currentTime = 0;
     clickSound.play();
 
     birthdayImage.style.display = "none";
-    if (birthdayText) birthdayText.style.display = "none"; // 👈 Hide for Tic Tac Toe
-    
+    if (doodleText) doodleText.style.display = "none";
+    if (birthdayText) birthdayText.style.display = "none";
+    if (downloadButton) downloadButton.style.display = "none";
+
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
 
@@ -168,7 +175,9 @@ closePopup.addEventListener("click", () => {
     popup2.style.display = "none";
 
     birthdayImage.style.display = "block";
-    if (birthdayText) birthdayText.style.display = "block"; // 👈 Reset to default
+    if (doodleText) doodleText.style.display = "block";   // Reset to default (doodle text active)
+    if (birthdayText) birthdayText.style.display = "none"; // Hide birthday text
+    if (downloadButton) downloadButton.style.display = "block";
     
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
@@ -179,18 +188,26 @@ closePopup.addEventListener("click", () => {
 });
 
 // =========================
-// DOWNLOAD BUTTON
+// DOWNLOAD BUTTON LOGIC
 // =========================
 
-downloadButton.addEventListener("click", () => {
-    const isHiddenActive = hiddenPicture.classList.contains("reveal-active") || hiddenPicture.style.display === "block";
-    const image = isHiddenActive ? hiddenPicture : birthdayImage;
+if (downloadButton) {
+    downloadButton.addEventListener("click", () => {
+        // Check if the hidden picture is currently revealed
+        const isHiddenActive = hiddenPicture.classList.contains("reveal-active") || hiddenPicture.style.display === "block";
+        
+        // Select the current active image
+        const imageToDownload = isHiddenActive ? hiddenPicture : birthdayImage;
 
-    const link = document.createElement("a");
-    link.href = image.src;
-    link.download = isHiddenActive ? "HappyBirthday.png" : "Doodle.png";
-    link.click();
-});
+        // Trigger download
+        const link = document.createElement("a");
+        link.href = imageToDownload.src;
+        link.download = isHiddenActive ? "HappyBirthday.png" : "Doodle.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+}
 
 // =========================
 // TIC TAC TOE GAME LOGIC
@@ -218,29 +235,31 @@ cells.forEach(cell => {
 
         // Player Win Check
         if (checkWinner("X")) {
-    gameStatus.textContent = "YOU WIN! 🎉";
-    gameOver = true;
+            gameStatus.textContent = "YOU WIN! 🎉";
+            gameOver = true;
 
-    stopGameMusic();
+            stopGameMusic();
 
-    ticTacToe.style.display = "none";
-    birthdayImage.style.display = "none";
+            ticTacToe.style.display = "none";
+            birthdayImage.style.display = "none";
 
-    if (birthdayText) birthdayText.style.display = "block"; // 👈 Show with Hidden Picture
+            // Hide doodle text & show birthday text on victory reveal
+            if (doodleText) doodleText.style.display = "none";
+            if (birthdayText) birthdayText.style.display = "block";
+            if (downloadButton) downloadButton.style.display = "block";
 
-    hiddenPicture.style.display = "block";
-    hiddenPicture.classList.remove("reveal-active");
-    void hiddenPicture.offsetWidth;
-    hiddenPicture.classList.add("reveal-active");
+            hiddenPicture.style.display = "block";
+            hiddenPicture.classList.remove("reveal-active");
+            void hiddenPicture.offsetWidth;
+            hiddenPicture.classList.add("reveal-active");
 
-    return;
-}
+            return;
+        }
 
         // Draw Check
         if (checkDraw()) {
             gameStatus.textContent = "It's a draw! :3";
             gameOver = true;
-            stopGameMusic();
             return;
         }
 
@@ -305,21 +324,21 @@ function makeBotMove(index) {
     board[index] = "O";
     cells[index].textContent = "O";
 
+    // Bot Wins
     if (checkWinner("O")) {
-        gameStatus.textContent = "YOU LOSE, YOU SNOOZE NYAAAAAHAHAH";
+        gameStatus.textContent = "YOU SNOOZE, YOU LOSE NYAAAHAHAHAHA";
         gameOver = true;
-        stopGameMusic();
         return;
     }
 
+    // Draw Check
     if (checkDraw()) {
         gameStatus.textContent = "It's a draw! :3";
         gameOver = true;
-        stopGameMusic();
         return;
     }
 
-    gameStatus.textContent = "Your turn! You are X";
+    gameStatus.textContent = "Your turn mimi :3";
 }
 
 function findWinningMove(player) {
@@ -356,10 +375,10 @@ function resetGame() {
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
 
-    gameStatus.textContent = "Your turn! You are X";
+    gameStatus.textContent = "You first, mimi :3";
 }
 
-// Restart button only resets the game board (music continues playing without restarting)
+// Restart button resets game board
 restartGame.addEventListener("click", () => {
     resetGame();
 });

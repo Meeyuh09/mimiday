@@ -32,7 +32,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     border: 2px dashed mediumaquamarine;
-    font-family: "Emilys Candy", cursive;
+    font-family: "Emilys Candy";
     font-size: large;
     font-weight: lighter;
     color: green;
@@ -46,10 +46,6 @@ body {
 .btn-image:active {
     transform: scale(0.95);
 }
-
-/* =========================
-   POPUP OVERLAYS & LAYOUTS
-   ========================= */
 
 /* =========================================
    FIXED POPUP OVERLAYS & LAYOUTS
@@ -85,12 +81,13 @@ body {
     border-radius: 20px;
     border: 3px dashed rgb(255, 87, 190);
     text-align: center;
+    font-family: "Purple Purse";
     
     /* Center all internal content inside the fixed box */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Keeps top header & bottom buttons anchored */
+    position: relative; /* Enabled relative positioning for pinned children */
     overflow: hidden;
 }
 
@@ -113,12 +110,19 @@ body {
     cursor: pointer;
 }
 
+/* Fix single buttons (like Next) to the bottom */
+.button2 {
+    margin-top: auto;
+}
+
+/* Fix button group (Close + Download) to the bottom */
 .button-group {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: auto; /* Pushes button row to the absolute bottom of flex container */
+    padding-top: 10px;
 }
 
 #popup4 {
@@ -127,6 +131,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-grow: 1; /* Allows image region to take up available vertical space */
 }
 
 .button4 {
@@ -145,7 +150,26 @@ body {
     display: block;
     margin: 0 auto;
     max-width: 100%;
+    max-height: 380px; /* Constrains image height so buttons don't clip */
     height: auto;
+    object-fit: contain;
+}
+
+/* Birthday text styling */
+#birthdayText {
+    font-family:"Purple Purse";
+    font-size: 15px;
+    color: green;
+    text-align: center;
+    margin: 10px 0;
+}
+
+#doodleText {
+    font-family: "Purple Purse";
+    font-size: 20px;
+    color: green;
+    text-align: center;
+    margin: 10px 0;
 }
 
 /* =========================================
@@ -154,11 +178,8 @@ body {
 
 #hiddenPicture {
     display: none;
-    margin: 0 auto;
-    max-width: 320px;
-    max-height: 360px;
-    width: auto;
-    height: auto;
+    width: 100%;
+    max-height: 380px; /* Keeps the revealed picture bounded */
     object-fit: contain;
 }
 
@@ -200,6 +221,7 @@ body {
     font-family: "Nerko One", cursive;
     color: green;
     width: 100%;
+    flex-grow: 1;
 }
 
 #gameBoard {
