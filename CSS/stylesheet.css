@@ -1,13 +1,13 @@
 html {
     background-color: palevioletred;
-    
 }
+
 body {
     margin: 0;
     min-height: 100vh;
     background-image: url("../Images/mao.png");
     background-size: contain;
-    background-repeat:space;
+    background-repeat: space;
     background-position: center;
 }
 
@@ -25,150 +25,245 @@ body {
 }
 
 .btn-image {
-    height:150px;
-    width: 350px;
-    border-radius: 50px;
+    height: 250px;
+    width: 250px;
+    border-radius: 35px;
     background-image: url(../Images/sighs.png);
     background-size: cover;
     background-repeat: no-repeat;
-    border-style: dashed;
-    border-color: mediumaquamarine;
-    font-family: "Emilys Candy";
+    border: 2px dashed mediumaquamarine;
+    font-family: "Emilys Candy", cursive;
     font-size: large;
-    font-weight:lighter;
+    font-weight: lighter;
     color: green;
-    -webkit-text-stroke:0.5px darkgreen;
+    -webkit-text-stroke: 0.5px darkgreen;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .btn-image:active {
     transform: scale(0.95);
 }
+
+/* =========================
+   POPUP OVERLAYS & LAYOUTS
+   ========================= */
+
+/* =========================================
+   FIXED POPUP OVERLAYS & LAYOUTS
+   ========================================= */
+
 .popup {
     display: none;
     position: fixed;
     top: 0;
-    left: 15%;
-    width: 70%;
-    height: 100%;
-
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.35);
+    
+    /* Perfect Center Alignment */
     justify-content: center;
     align-items: center;
-
+    
+    /* Prevents background and popup scroll */
+    overflow: hidden;
     z-index: 1000;
 }
+
 .popup-box {
-    width: 500px;
+    /* Set strict fixed dimensions */
+    width: 480px;
+    height: 600px;
+    
     box-sizing: border-box;
     background-color: #e1f7d5;
     color: green;
-    padding: 30px;
+    padding: 25px;
     border-radius: 20px;
     border: 3px dashed rgb(255, 87, 190);
     text-align: center;
+    
+    /* Center all internal content inside the fixed box */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Keeps top header & bottom buttons anchored */
+    overflow: hidden;
 }
+
 .popup-box h2 .strike {
     text-decoration: line-through !important;
 }
-.button2 {
-    background-color:#ffbdbd;
-    height: 45px;
-    width: 55px;
-    border-radius: 10px;
-    font-family: "Nerko One";
-    font-size: large;
-    font-weight: lighter;
-    border: 0;
-    color: green;
-}
+
+.button2,
 .button3 {
-    background-color:#ffbdbd;
+    background-color: #ffbdbd;
     height: 45px;
-    width: 55px;
+    min-width: 65px;
+    padding: 0 15px;
     border-radius: 10px;
-    font-family: "Nerko One";
+    font-family: "Nerko One", cursive;
     font-size: large;
     font-weight: lighter;
     border: 0;
     color: green;
-}
-#popup2 {
-    display: none;
-    opacity: 0;
-    transform: scale(0.3);
-    z-index: 1001;
+    cursor: pointer;
 }
 
-#popup2.show {
+.button-group {
     display: flex;
-
-    animation: dramaticPopup 0.8s cubic-bezier(0.17, 0.67, 0.25, 1.2) forwards;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
+#popup4 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-/* Dramatic entrance */
+.button4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0 auto;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Scale images down so they fit comfortably in the 600px fixed card */
+#birthdayImage {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* =========================================
+   HIDDEN PICTURE REVEAL FIX
+   ========================================= */
+
+#hiddenPicture {
+    display: none;
+    margin: 0 auto;
+    max-width: 320px;
+    max-height: 360px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+#hiddenPicture.reveal-active {
+    display: block !important;
+    animation: dramaticPopup 0.85s cubic-bezier(0.17, 0.67, 0.25, 1.2) forwards;
+}
+
 @keyframes dramaticPopup {
-
     0% {
         opacity: 0;
-        transform: scale(0.3) rotate(-8deg);
+        transform: scale(0.2) rotate(-12deg);
         filter: blur(10px);
     }
-
     40% {
         opacity: 1;
-        transform: scale(1.05) rotate(3deg);
+        transform: scale(1.08) rotate(4deg);
         filter: blur(0);
     }
-
     65% {
         transform: scale(0.95) rotate(-2deg);
     }
-
     80% {
         transform: scale(1.02) rotate(1deg);
     }
-
     100% {
         opacity: 1;
         transform: scale(1) rotate(0deg);
     }
 }
-#popup2.show::before {
-    content: "";
-    position: absolute;
-    inset: -20px;
-    z-index: -1;
-    animation: dramaticFlash 0.5s ease-out;
+
+/* =========================
+   TIC TAC TOE GRID
+   ========================= */
+
+.tic-tac-toe {
+    display: none;
+    text-align: center;
+    font-family: "Nerko One", cursive;
+    color: green;
+    width: 100%;
 }
 
-@keyframes dramaticFlash {
-    0% {
-        opacity: 1;
-        transform: scale(0.8);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(1.5);
-    }
+#gameBoard {
+    display: grid;
+    grid-template-columns: repeat(3, 90px);
+    grid-template-rows: repeat(3, 90px);
+    gap: 8px;
+    justify-content: center;
+    margin: 15px auto;
 }
+
+.cell {
+    width: 90px;
+    height: 90px;
+    background-color: #ffbdbd;
+    border: 2px dashed mediumaquamarine;
+    border-radius: 10px;
+    font-size: 45px;
+    font-family: "Nerko One", cursive;
+    color: green;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell:hover {
+    background-color: #ffd1d1;
+}
+
+#gameStatus {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+#restartGame {
+    background-color: #ffbdbd;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-family: "Nerko One", cursive;
+    font-size: 18px;
+    color: green;
+    cursor: pointer;
+}
+
+/* =========================
+   UTILITIES
+   ========================= */
+
 #musicButton {
     position: absolute;
     top: 20px;
-    width: 25px;
-    height: 25px;
-
+    left: 20px;
+    width: 35px;
+    height: 35px;
     border: none;
     border-radius: 5px;
-
     background: #ffffff;
     color: #68ff84;
-
     font-size: 16px;
-    font-family: "Nerko One", sans-serif;
+    font-family: "Nerko One", cursive;
     cursor: pointer;
     z-index: 10;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -178,16 +273,16 @@ body {
     background: #ddd;
 }
 
-.musicButton:active {
+#musicButton:active {
     transform: scale(0.9);
 }
+
 .download-button {
     background: none;
     border: none;
     font-size: 22px;
     color: #333;
     cursor: pointer;
-    margin-left: 10px;
 }
 
 .download-button:hover {

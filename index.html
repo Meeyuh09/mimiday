@@ -6,40 +6,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="CSS/stylesheet.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&family=Nerko+One&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="content">
-        <link href="https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap" rel="stylesheet" type="text/css">
-         <button class="btn-image" id="myButton">PRESS ME FOR A SURPRISE</button>
+        <button class="btn-image" id="myButton">
+            <img src="Images/button.png" width="200" height="200" alt="Button">
+        </button>
         <audio id="bgMusic" loop>
             <source src="honeybee.mp3" type="audio/mpeg">
         </audio>
         <button id="musicButton">▶</button>
     </div>
+
+    <!-- POPUP 1 -->
     <div class="popup" id="popup">
-    <div class="popup-box">
-        <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet" type="text/css">
-        <h2>❤ Happy <span class="strike">23rd</span> 22nd Birthday, Melvin ❤</h2>
-        <p>I know we agreed not to do anything for our birthdays but how could I not do something for my special boy?
-            This isn't much anyways but I made it with with lots of love mwahmwah. Next time, let's actually not do anything :3
-            My baby boy is 22 now. I'm so happy to have been with you in the eniterty of your 21, baby and hopefully I stay with you for life
-            till our balls and boobs are sagging. My days are always filled with so much joy and love cause of you. I love you so much baby.
-            My beautiful mimi with sparkly pretty eyes.
-        </p>
-        <button class="button2" id="nextButton">Next</button>
+        <div class="popup-box">
+            <h2>❤ Happy <span class="strike">23rd</span> 22nd Birthday ❤</h2>
+            <p></p>
+            <button class="button2" id="nextButton">Next</button>
+        </div>
     </div>
-</div>
 
-<!-- POPUP 2 -->
-<div class="popup" id="popup2">
-    <div class="popup-box">
-        <img id="birthdayImage" src="Images/HappyBirthday.png" width="400px" height="450px">
-        <p>Happiest Birthday, my love :3</p>
+    <!-- POPUP 2 -->
+    <div class="popup" id="popup2">
+        <div class="popup-box">
 
-        <button class="button3" id="closePopup">Close</button>
-        <button class="download-button" id="downloadButton" title="Download image"><i class="fa-solid fa-download"></i></button>
+            <div id="popup4">
+                <button class="button4" id="doodleButton">
+                    <img id="birthdayImage" src="Images/doodle.png" width="400" height="450" alt="Birthday Doodle">
+                </button>
+
+                <img id="hiddenPicture" src="Images/HappyBirthday.png" width="400" height="450" alt="Happy Birthday Picture">
+            </div>
+
+            <!-- TIC TAC TOE -->
+            <div class="tic-tac-toe" id="ticTacToe">
+                <h2>Tic Tac Toe :3</h2>
+
+                <div id="gameBoard">
+                    <button class="cell" data-index="0"></button>
+                    <button class="cell" data-index="1"></button>
+                    <button class="cell" data-index="2"></button>
+                    <button class="cell" data-index="3"></button>
+                    <button class="cell" data-index="4"></button>
+                    <button class="cell" data-index="5"></button>
+                    <button class="cell" data-index="6"></button>
+                    <button class="cell" data-index="7"></button>
+                    <button class="cell" data-index="8"></button>
+                </div>
+
+                <p id="gameStatus">Your turn! You are X</p>
+                <button id="restartGame">Restart</button>
+            </div>
+
+            <p>Happiest Birthday :3</p>
+
+            <div class="button-group">
+                <button class="button3" id="closePopup">Close</button>
+                <button class="download-button" id="downloadButton" title="Download image">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+
+        </div>
     </div>
-</div>
 
     <script src="Script/Script.js"></script>
 </body>
