@@ -1,3 +1,7 @@
+// =========================
+// DOM ELEMENTS
+// =========================
+const birthdayText = document.getElementById("birthdayText");
 const button = document.getElementById("myButton");
 const popup = document.getElementById("popup");
 const popup2 = document.getElementById("popup2");
@@ -15,23 +19,24 @@ const cells = document.querySelectorAll(".cell");
 const gameStatus = document.getElementById("gameStatus");
 const restartGame = document.getElementById("restartGame");
 
-// Sounds
+// Sounds & Audio Elements
 const clickSound = new Audio("click.mp3");
 const music = document.getElementById("bgMusic");
 const musicButton = document.getElementById("musicButton");
+const gameMusic = document.getElementById("gameMusic");
 
 // =========================
-// MUSIC
+// MUSIC & AUDIO CONTROLLERS
 // =========================
-
 let musicStarted = false;
+let wasSiteMusicPlaying = false;
 
 document.addEventListener("click", function startMusic() {
-    if (!musicStarted) {
+    if (!musicStarted && music) {
         music.play()
             .then(() => {
                 musicStarted = true;
-                musicButton.textContent = "⏸";
+                if (musicButton) musicButton.textContent = "⏸";
             })
             .catch(error => {
                 console.log("Music could not start:", error);
@@ -39,21 +44,83 @@ document.addEventListener("click", function startMusic() {
     }
 }, { once: true });
 
-musicButton.addEventListener("click", (event) => {
-    event.stopPropagation();
+if (musicButton) {
+    musicButton.addEventListener("click", (event) => {
+        event.stopPropagation();
 
-    if (music.paused) {
-        music.play().then(() => {
-            musicButton.textContent = "⏸";
-        });
-    } else {
+        if (music.paused) {
+            music.play().then(() => {
+                musicButton.textContent = "⏸";
+            });
+        } else {
+            music.pause();
+            musicButton.textContent = "▶";
+        }
+    });
+}
+
+function startGameMusic() {
+    // 1. Remember if site music was playing and pause it
+    if (music && !music.paused) {
+        wasSiteMusicPlaying = true;
         music.pause();
-        musicButton.textContent = "▶";
     }
-});
+
+    // 2. Reset volume & play game music
+    if (gameMusic) {
+        gameMusic.volume = 1; // Ensure full volume on start
+        if (gameMusic.paused) {
+            gameMusic.play().catch(error => {
+                console.log("Game music play blocked:", error);
+            });
+        }
+    }
+}
+
+// Crossfade settings
+const FADE_DURATION = 1500; // Fade time in milliseconds (1 second)
+const FADE_STEPS = 20; // Slightly increased steps for extra smooth transitions
+const STEP_TIME = FADE_DURATION / FADE_STEPS;
+
+function stopGameMusic() {
+    if (!gameMusic) return;
+
+    let stepsCount = 0;
+    const initialGameVolume = gameMusic.volume || 1;
+    
+    // Prepare background music to fade in
+    if (music && wasSiteMusicPlaying) {
+        music.volume = 0;
+        music.play().catch(error => console.log("Main music fade error:", error));
+    }
+
+    const fadeInterval = setInterval(() => {
+        stepsCount++;
+        const progress = stepsCount / FADE_STEPS;
+
+        // 1. Fade OUT game music
+        gameMusic.volume = Math.max(0, initialGameVolume * (1 - progress));
+
+        // 2. Fade IN site background music
+        if (music && wasSiteMusicPlaying) {
+            music.volume = Math.min(1, progress);
+        }
+
+        // When crossfade finishes:
+        if (stepsCount >= FADE_STEPS) {
+            clearInterval(fadeInterval);
+            gameMusic.pause();
+            gameMusic.currentTime = 0;
+            gameMusic.volume = initialGameVolume; // Reset volume for next round
+            
+            if (music) music.volume = 1;
+            wasSiteMusicPlaying = false;
+        }
+    }, STEP_TIME);
+}
 
 // =========================
-// POPUPS NAVIGATION
+// POPUP NAVIGATION
 // =========================
 
 button.addEventListener("click", () => {
@@ -69,8 +136,9 @@ nextButton.addEventListener("click", () => {
     popup.style.display = "none";
     popup2.style.display = "flex";
 
-    // Ensure only the doodle image shows initially
     birthdayImage.style.display = "block";
+    if (birthdayText) birthdayText.style.display = "block"; // 👈 Show with Doodle
+    
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
     ticTacToe.style.display = "none";
@@ -81,11 +149,15 @@ doodleButton.addEventListener("click", () => {
     clickSound.play();
 
     birthdayImage.style.display = "none";
+    if (birthdayText) birthdayText.style.display = "none"; // 👈 Hide for Tic Tac Toe
+    
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
 
     ticTacToe.style.display = "block";
+
     resetGame();
+    startGameMusic();
 });
 
 closePopup.addEventListener("click", () => {
@@ -95,17 +167,19 @@ closePopup.addEventListener("click", () => {
     popup.style.display = "none";
     popup2.style.display = "none";
 
-    // Reset visibility states
     birthdayImage.style.display = "block";
+    if (birthdayText) birthdayText.style.display = "block"; // 👈 Reset to default
+    
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
     ticTacToe.style.display = "none";
 
     resetGame();
+    stopGameMusic();
 });
 
 // =========================
-// DOWNLOAD
+// DOWNLOAD BUTTON
 // =========================
 
 downloadButton.addEventListener("click", () => {
@@ -142,35 +216,31 @@ cells.forEach(cell => {
         board[index] = "X";
         this.textContent = "X";
 
-        // =========================
-// PLAYER MOVE WIN CHECK
-// =========================
-
-if (checkWinner("X")) {
+        // Player Win Check
+        if (checkWinner("X")) {
     gameStatus.textContent = "YOU WIN! 🎉";
     gameOver = true;
 
-    // 1. Hide Tic Tac Toe game
-    ticTacToe.style.display = "none";
+    stopGameMusic();
 
-    // 2. Hide original doodle image
+    ticTacToe.style.display = "none";
     birthdayImage.style.display = "none";
 
-    // 3. Clear inline style override & apply display + animation
+    if (birthdayText) birthdayText.style.display = "block"; // 👈 Show with Hidden Picture
+
     hiddenPicture.style.display = "block";
     hiddenPicture.classList.remove("reveal-active");
-    
-    void hiddenPicture.offsetWidth; // Force CSS reflow to restart animation
-    
+    void hiddenPicture.offsetWidth;
     hiddenPicture.classList.add("reveal-active");
 
     return;
 }
 
-        // Draw
+        // Draw Check
         if (checkDraw()) {
             gameStatus.textContent = "It's a draw! :3";
             gameOver = true;
+            stopGameMusic();
             return;
         }
 
@@ -236,14 +306,16 @@ function makeBotMove(index) {
     cells[index].textContent = "O";
 
     if (checkWinner("O")) {
-        gameStatus.textContent = "The bot wins! 🤖";
+        gameStatus.textContent = "YOU LOSE, YOU SNOOZE NYAAAAAHAHAH";
         gameOver = true;
+        stopGameMusic();
         return;
     }
 
     if (checkDraw()) {
         gameStatus.textContent = "It's a draw! :3";
         gameOver = true;
+        stopGameMusic();
         return;
     }
 
@@ -273,10 +345,6 @@ function checkDraw() {
     return board.every(cell => cell !== "");
 }
 
-// =========================
-// RESET GAME FUNCTION
-// =========================
-
 function resetGame() {
     board = Array(9).fill("");
     gameOver = false;
@@ -285,12 +353,13 @@ function resetGame() {
         cell.textContent = "";
     });
 
-    // Reset hidden picture back to hidden state
     hiddenPicture.classList.remove("reveal-active");
     hiddenPicture.style.display = "none";
 
     gameStatus.textContent = "Your turn! You are X";
 }
+
+// Restart button only resets the game board (music continues playing without restarting)
 restartGame.addEventListener("click", () => {
     resetGame();
 });
